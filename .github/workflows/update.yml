@@ -1,0 +1,59 @@
+name: 更新家庭游戏库并部署 Pages
+
+on:
+  schedule:
+    # 每天 UTC 14:40 ≈ 北京时间 22:40
+    - cron: '40 14 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write   # 提交 data/public_library.json
+  pages: write      # 部署 Pages
+  id-token: write   # Pages 部署鉴权
+
+concurrency:
+  group: steam-family-pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 安装 Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: 安装最小依赖
+        run: pip install fastapi
+
+      - name: 抓取并生成脱敏数据
+        id: update
+        env:
+          STEAM_WEBAPI_TOKEN: ${{ secrets.STEAM_WEBAPI_TOKEN }}
+          MEMBERS_JSON: ${{ secrets.MEMBERS_JSON }}
+        run: python scripts/cloud_update.py
+
+      # result 取值：updated / unchanged / skipped / error
+      # 只有 updated 才提交并部署；skipped（token 失效）不部署，旧站继续可用
+      - name: 提交更新的快照
+        if: steps.update.outputs.result == 'updated'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/public_library.json
+          git diff --cached --quiet && echo "无变化" || git commit -m "chore: 更新家庭游戏库快照 [skip ci]"
+          git push
+
+      - name: 上传 Pages 产物
+        if: steps.update.outputs.result == 'updated'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - name: 部署到 GitHub Pages
+        if: steps.update.outputs.result == 'updated'
+        uses: actions/deploy-pages@v4

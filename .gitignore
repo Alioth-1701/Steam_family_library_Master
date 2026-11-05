@@ -1,0 +1,24 @@
+# ===== 私密信息，绝不能提交 =====
+# config.json 含本地 token + members 映射
+config.json
+.env
+.env.*
+*.token
+secrets.*
+
+# ===== 本地运行产物 =====
+# library.db 为本地 SQLite 数据库
+library.db
+*.db
+__pycache__/
+*.pyc
+
+# ===== 旧版独立脚本（云端模式不需要） =====
+steam_family_library.py
+steamfamilycheck.py
+
+# ===== 系统/编辑器 =====
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

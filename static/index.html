@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steam 家庭游戏库看板</title>
+<style>
+  :root {
+    --bg: #12151c;
+    --bg-card: #1c2230;
+    --bg-hover: #252d3f;
+    --text: #e4e8f0;
+    --text-dim: #8b93a5;
+    --accent: #66c0f4;
+    --accent-2: #1b2838;
+    --danger: #f47c66;
+    --new-badge: #e8b33d;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ---------- 顶部栏 ---------- */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(18, 21, 28, .95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid #262e40;
+    padding: 12px 24px;
+  }
+  .header-inner {
+    max-width: 1600px; margin: 0 auto;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .header-inner h1 { font-size: 18px; white-space: nowrap; }
+  .header-inner h1 span { color: var(--accent); }
+  .header-meta { color: var(--text-dim); font-size: 12px; }
+  .spacer { flex: 1; }
+  button {
+    cursor: pointer; border: none; border-radius: 6px;
+    padding: 7px 14px; font-size: 13px;
+    background: var(--accent-2); color: var(--text);
+    transition: background .15s;
+  }
+  button:hover { background: var(--bg-hover); }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+  button.primary { background: var(--accent); color: #0d1117; font-weight: 600; }
+  button.primary:hover { background: #8fd0f8; }
+
+  /* ---------- 提示横幅 ---------- */
+  .banner {
+    max-width: 1600px; margin: 16px auto 0; padding: 12px 20px;
+    border-radius: 8px; display: none; align-items: center; gap: 12px;
+    font-size: 14px;
+  }
+  .banner.show { display: flex; }
+  .banner.error { background: #3a2320; color: #ffb3a6; border: 1px solid #6b3a32; }
+  .banner.warn { background: #3a3020; color: #ffd98a; border: 1px solid #6b5732; }
+  .banner code { background: rgba(0,0,0,.3); padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+
+  /* ---------- 统计栏 ---------- */
+  .stats {
+    max-width: 1600px; margin: 16px auto 0; padding: 0 24px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;
+  }
+  .stat-card {
+    background: var(--bg-card); border-radius: 10px; padding: 16px 20px;
+  }
+  .stat-card .num { font-size: 28px; font-weight: 700; }
+  .stat-card .label { color: var(--text-dim); font-size: 13px; margin-top: 4px; }
+  #stat-new .num { color: var(--new-badge); }
+  #stat-blocked .num { color: var(--danger); }
+
+  /* ---------- 筛选栏 ---------- */
+  .filters {
+    max-width: 1600px; margin: 16px auto 0; padding: 0 24px;
+    display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+  }
+  .filters input[type="search"] {
+    background: var(--bg-card); border: 1px solid #2c3549; border-radius: 6px;
+    color: var(--text); padding: 8px 12px; font-size: 13px; width: 240px;
+  }
+  .filters input[type="search"]:focus { outline: none; border-color: var(--accent); }
+  .filters label.toggle {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-dim); cursor: pointer; user-select: none;
+  }
+  .filters label.toggle input { accent-color: var(--accent); }
+
+  /* 拥有者多选下拉 */
+  .dropdown { position: relative; }
+  .dropdown > button::after { content: " ▾"; color: var(--text-dim); }
+  .dropdown-panel {
+    display: none; position: absolute; top: calc(100% + 6px); left: 0; z-index: 60;
+    background: var(--bg-card); border: 1px solid #2c3549; border-radius: 8px;
+    padding: 8px; min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  }
+  .dropdown-panel.open { display: block; }
+  .dropdown-panel label {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 8px; font-size: 13px; border-radius: 5px; cursor: pointer;
+  }
+  .dropdown-panel label:hover { background: var(--bg-hover); }
+  .dropdown-panel input { accent-color: var(--accent); }
+  .dropdown-actions { display: flex; gap: 6px; padding: 6px 8px 2px; border-top: 1px solid #2c3549; margin-top: 4px; }
+  .dropdown-actions button { padding: 4px 10px; font-size: 12px; }
+
+  /* ---------- 区块标题 ---------- */
+  .section {
+    max-width: 1600px; margin: 28px auto 0; padding: 0 24px;
+  }
+  .section h2 { font-size: 16px; margin-bottom: 12px; color: var(--text); }
+  .section h2 .count { color: var(--text-dim); font-weight: 400; font-size: 13px; margin-left: 8px; }
+  .hidden { display: none !important; }
+
+  /* ---------- NEW 横排区 ---------- */
+  .new-strip {
+    display: flex; gap: 14px; overflow-x: auto; padding-bottom: 12px;
+  }
+  .new-strip::-webkit-scrollbar { height: 8px; }
+  .new-strip::-webkit-scrollbar-thumb { background: #2c3549; border-radius: 4px; }
+
+  /* ---------- 海报 ---------- */
+  .poster {
+    position: relative; width: 100%; aspect-ratio: 2 / 3;
+    border-radius: 8px; overflow: hidden; cursor: pointer;
+    background: var(--bg-card);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .poster:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.5); }
+  .poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .poster .badge-new {
+    position: absolute; top: 8px; left: 8px; z-index: 2;
+    background: var(--new-badge); color: #1a1405;
+    font-size: 11px; font-weight: 800; letter-spacing: .5px;
+    padding: 3px 8px; border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.4);
+  }
+  .poster .badge-blocked {
+    position: absolute; top: 8px; right: 8px; z-index: 2;
+    background: rgba(0,0,0,.65); color: var(--danger);
+    font-size: 11px; padding: 3px 7px; border-radius: 4px;
+  }
+  .poster.unplayable { filter: grayscale(.9); opacity: .45; }
+  .poster.unplayable:hover { filter: grayscale(.5); opacity: .75; }
+  .poster .fallback {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim); font-size: 12px; text-align: center; padding: 8px;
+  }
+  .new-strip .poster { width: 150px; flex: 0 0 auto; }
+
+  /* ---------- 海报墙 ---------- */
+  .wall {
+    display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .empty-tip {
+    max-width: 1600px; margin: 60px auto; text-align: center;
+    color: var(--text-dim); font-size: 14px; line-height: 2;
+  }
+
+  /* ---------- 弹层 ---------- */
+  .modal-mask {
+    display: none; position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,.7); align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .modal-mask.open { display: flex; }
+  .modal {
+    background: var(--bg-card); border-radius: 12px; padding: 24px;
+    max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto;
+  }
+  .modal h3 { margin-bottom: 16px; font-size: 17px; }
+  .modal .field { margin-bottom: 14px; }
+  .modal .field label { display: block; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; }
+  .modal input[type="password"], .modal input[type="text"] {
+    width: 100%; background: var(--bg); border: 1px solid #2c3549; border-radius: 6px;
+    color: var(--text); padding: 9px 12px; font-size: 13px;
+  }
+  .modal input:focus { outline: none; border-color: var(--accent); }
+  .modal .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 8px; }
+  .modal .hint { font-size: 12px; color: var(--text-dim); line-height: 1.7; }
+  .modal .hint code { background: rgba(0,0,0,.3); padding: 1px 5px; border-radius: 4px; }
+
+  /* 游戏详情弹层 */
+  .detail { display: flex; gap: 20px; }
+  .detail-poster { width: 200px; flex: 0 0 auto; }
+  .detail-poster img { width: 100%; border-radius: 8px; display: block; }
+  .detail-info { flex: 1; min-width: 0; }
+  .detail-info h3 { margin-bottom: 12px; }
+  .detail-info .row { margin-bottom: 10px; font-size: 13px; }
+  .detail-info .row .k { color: var(--text-dim); margin-right: 8px; }
+  .detail-info .owners { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .detail-info .owner-chip {
+    background: var(--bg-hover); border-radius: 12px; padding: 3px 10px; font-size: 12px;
+  }
+  .detail-actions { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  @media (max-width: 560px) { .detail { flex-direction: column; } .detail-poster { width: 140px; } }
+
+  /* ---------- toast ---------- */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    background: var(--bg-card); border: 1px solid #2c3549; border-radius: 8px;
+    padding: 10px 20px; font-size: 13px; z-index: 200;
+    display: none; box-shadow: 0 8px 24px rgba(0,0,0,.5);
+  }
+  #toast.show { display: block; }
+  #toast.error { border-color: #6b3a32; color: #ffb3a6; }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <h1>🎮 Steam 家庭游戏库<span id="family-name"></span></h1>
+    <span class="header-meta" id="fetched-at"></span>
+    <div class="spacer"></div>
+    <button id="btn-token">Token 设置</button>
+    <button id="btn-refresh" class="primary">⟳ 刷新数据</button>
+  </div>
+</header>
+
+<div class="banner error" id="banner-error"></div>
+<div class="banner warn" id="banner-warn"></div>
+
+<div class="stats">
+  <div class="stat-card"><div class="num" id="stat-total">-</div><div class="label">游戏总数</div></div>
+  <div class="stat-card" id="stat-new"><div class="num" id="stat-new-num">-</div><div class="label">新入库（最近 30 天）</div></div>
+  <div class="stat-card" id="stat-blocked"><div class="num" id="stat-blocked-num">-</div><div class="label">不可共享</div></div>
+</div>
+
+<div class="filters">
+  <input type="search" id="filter-name" placeholder="搜索游戏名…">
+  <div class="dropdown">
+    <button id="owner-dropdown-btn">拥有者</button>
+    <div class="dropdown-panel" id="owner-dropdown-panel"></div>
+  </div>
+  <label class="toggle"><input type="checkbox" id="filter-playable"> 只看可玩</label>
+  <label class="toggle"><input type="checkbox" id="filter-new"> 只看新入库</label>
+</div>
+
+<div class="section hidden" id="section-new">
+  <h2>✨ 新入库<span class="count" id="new-count"></span></h2>
+  <div class="new-strip" id="new-strip"></div>
+</div>
+
+<div class="section">
+  <h2>全部游戏<span class="count" id="wall-count"></span></h2>
+  <div class="wall" id="wall"></div>
+</div>
+
+<div class="empty-tip hidden" id="empty-tip">
+  暂无数据。<br>请在右上角「Token 设置」中填入 webapi_token，或点击「刷新数据」。
+</div>
+
+<!-- Token 弹层 -->
+<div class="modal-mask" id="token-modal-mask">
+  <div class="modal">
+    <h3>Token 设置</h3>
+    <div class="field">
+      <label>webapi_token（约 24 小时过期，到期需重新获取）</label>
+      <input type="password" id="token-input" placeholder="eyJ0eXAi..." autocomplete="off">
+    </div>
+    <div class="hint">
+      获取方式：浏览器登录 Steam → 访问
+      <code>store.steampowered.com/pointssummary/ajaxgetasyncconfig</code>
+      → 复制返回 JSON 中的 <code>webapi_token</code> 值。<br>
+      保存后会立即写回 config.json 并重新抓取。
+    </div>
+    <div class="modal-actions">
+      <button id="token-cancel">取消</button>
+      <button id="token-save" class="primary">保存并抓取</button>
+    </div>
+  </div>
+</div>
+
+<!-- 游戏详情弹层 -->
+<div class="modal-mask" id="detail-modal-mask">
+  <div class="modal">
+    <div class="detail">
+      <div class="detail-poster"><img id="detail-img" alt=""></div>
+      <div class="detail-info">
+        <h3 id="detail-name"></h3>
+        <div class="row"><span class="k">拥有者</span><div class="owners" id="detail-owners"></div></div>
+        <div class="row"><span class="k">入库日期</span><span id="detail-acquired"></span></div>
+        <div class="row"><span class="k">我的游玩时长</span><span id="detail-playtime"></span></div>
+        <div class="row hidden" id="detail-excluded-row"><span class="k">不可共享</span><span id="detail-excluded"></span></div>
+        <div class="detail-actions">
+          <button class="primary" id="detail-store" type="button">Steam 商店页</button>
+          <button id="detail-heihei" type="button">小黑盒</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+let GAMES = [];
+let META = {};
+const selectedOwners = new Set();
+
+const $ = id => document.getElementById(id);
+
+function toast(msg, isError) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.className = "show" + (isError ? " error" : "");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.className = "", 3500);
+}
+
+function fmtDate(iso) {
+  if (!iso) return "";
+  return iso.replace("T", " ").slice(0, 19);
+}
+
+function fmtHours(minutes) {
+  const h = (minutes || 0) / 60;
+  return h < 0.05 ? "未游玩" : h.toFixed(1) + " 小时";
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+// ---------- 数据加载 ----------
+
+async function loadLibrary() {
+  try {
+    const r = await fetch("/api/library");
+    const body = await r.json();
+    if (!body.ok) { toast(body.error?.message || "加载失败", true); return; }
+    GAMES = body.data.games;
+    META = body.data.meta;
+    renderAll();
+  } catch (e) {
+    toast("无法连接后端，请确认 app.py 正在运行", true);
+  }
+}
+
+function renderAll() {
+  $("family-name").textContent = META.family_name ? " · " + META.family_name : "";
+  $("fetched-at").textContent = META.fetched_at
+    ? "数据来自 " + fmtDate(META.fetched_at) : "";
+
+  const bannerErr = $("banner-error"), bannerWarn = $("banner-warn");
+  bannerErr.className = "banner error";
+  bannerWarn.className = "banner warn";
+  if (META.last_error) {
+    bannerErr.innerHTML = "⚠ " + escapeHtml(META.last_error.message)
+      + "<div class=\"spacer\"></div><button onclick=\"openTokenModal()\">去更新 Token</button>";
+    bannerErr.classList.add("show");
+  } else if (META.token_status === "expired") {
+    bannerErr.innerHTML = "⚠ token 已过期，请到 <code>store.steampowered.com/pointssummary/ajaxgetasyncconfig</code> 重新获取"
+      + "<div class=\"spacer\"></div><button onclick=\"openTokenModal()\">去更新 Token</button>";
+    bannerErr.classList.add("show");
+  }
+  if (META.members_unmapped && META.members_unmapped.length) {
+    bannerWarn.textContent = "ℹ 以下成员未在 config.json 中映射昵称："
+      + META.members_unmapped.join("、") + "（已用 SteamID 代替）";
+    bannerWarn.classList.add("show");
+  }
+
+  const total = GAMES.length;
+  const newCount = GAMES.filter(g => g.is_new).length;
+  const blocked = GAMES.filter(g => !g.playable).length;
+  $("stat-total").textContent = total;
+  $("stat-new-num").textContent = newCount;
+  $("stat-blocked-num").textContent = blocked;
+
+  renderOwnerDropdown();
+
+  const newGames = GAMES.filter(g => g.is_new)
+    .sort((a, b) => (b.new_date || "").localeCompare(a.new_date || ""));
+  $("section-new").classList.toggle("hidden", newGames.length === 0);
+  $("new-count").textContent = newGames.length + " 款";
+  $("new-strip").innerHTML = "";
+  newGames.forEach(g => $("new-strip").appendChild(makePoster(g, true)));
+
+  $("empty-tip").classList.toggle("hidden", total > 0);
+  applyFilters();
+}
+
+function renderOwnerDropdown() {
+  const names = [...new Set(GAMES.flatMap(g => g.owner_nicknames))].sort();
+  const panel = $("owner-dropdown-panel");
+  panel.innerHTML = "";
+  names.forEach(n => {
+    const label = document.createElement("label");
+    const cb = document.createElement("input");
+    cb.type = "checkbox";
+    cb.checked = selectedOwners.has(n);
+    cb.addEventListener("change", () => {
+      if (cb.checked) selectedOwners.add(n); else selectedOwners.delete(n);
+      applyFilters();
+    });
+    label.appendChild(cb);
+    label.appendChild(document.createTextNode(n));
+    panel.appendChild(label);
+  });
+  const actions = document.createElement("div");
+  actions.className = "dropdown-actions";
+  const all = document.createElement("button");
+  all.textContent = "全选";
+  all.addEventListener("click", () => {
+    names.forEach(n => selectedOwners.add(n));
+    renderOwnerDropdown(); applyFilters();
+  });
+  const none = document.createElement("button");
+  none.textContent = "清空";
+  none.addEventListener("click", () => {
+    selectedOwners.clear();
+    renderOwnerDropdown(); applyFilters();
+  });
+  actions.appendChild(all); actions.appendChild(none);
+  panel.appendChild(actions);
+  $("owner-dropdown-btn").textContent = selectedOwners.size
+    ? "拥有者 (" + selectedOwners.size + ")" : "拥有者";
+}
+
+// ---------- 海报 ----------
+
+function makePoster(g, isNewSection) {
+  const div = document.createElement("div");
+  div.className = "poster" + (g.playable ? "" : " unplayable");
+  if (!g.playable && g.exclude_reason) div.title = g.exclude_reason;
+
+  const img = document.createElement("img");
+  img.loading = "lazy";
+  img.alt = g.name;
+  img.src = g.poster_url;
+  img.addEventListener("error", function onErr() {
+    if (!img.dataset.fallback) {
+      img.dataset.fallback = "1";
+      img.src = g.header_url;
+    } else {
+      img.remove();
+      const fb = document.createElement("div");
+      fb.className = "fallback";
+      fb.textContent = g.name;
+      div.appendChild(fb);
+    }
+  });
+  div.appendChild(img);
+
+  if (isNewSection || g.is_new) {
+    const badge = document.createElement("div");
+    badge.className = "badge-new";
+    badge.textContent = "NEW";
+    div.appendChild(badge);
+  }
+  if (!g.playable) {
+    const badge = document.createElement("div");
+    badge.className = "badge-blocked";
+    badge.textContent = "不可共享";
+    div.appendChild(badge);
+  }
+  div.addEventListener("click", () => openDetail(g));
+  return div;
+}
+
+// ---------- 筛选 ----------
+
+function applyFilters() {
+  const q = $("filter-name").value.trim().toLowerCase();
+  const playableOnly = $("filter-playable").checked;
+  const newOnly = $("filter-new").checked;
+
+  const filtered = GAMES.filter(g => {
+    if (q && !g.name.toLowerCase().includes(q)) return false;
+    if (playableOnly && !g.playable) return false;
+    if (newOnly && !g.is_new) return false;
+    if (selectedOwners.size &&
+        !g.owner_nicknames.some(n => selectedOwners.has(n))) return false;
+    return true;
+  });
+
+  const wall = $("wall");
+  wall.innerHTML = "";
+  filtered.forEach(g => wall.appendChild(makePoster(g, false)));
+  $("wall-count").textContent = filtered.length + " / " + GAMES.length + " 款";
+}
+
+["filter-name", "filter-playable", "filter-new"].forEach(id => {
+  $(id).addEventListener("input", applyFilters);
+});
+
+$("owner-dropdown-btn").addEventListener("click", e => {
+  e.stopPropagation();
+  $("owner-dropdown-panel").classList.toggle("open");
+});
+document.addEventListener("click", e => {
+  if (!e.target.closest(".dropdown")) $("owner-dropdown-panel").classList.remove("open");
+});
+
+// ---------- 详情弹层 ----------
+
+function openDetail(g) {
+  $("detail-name").textContent = g.name;
+  const img = $("detail-img");
+  img.dataset.fallback = "";
+  img.onerror = () => {
+    if (!img.dataset.fallback) { img.dataset.fallback = "1"; img.src = g.header_url; }
+  };
+  img.src = g.poster_url;
+  const owners = $("detail-owners");
+  owners.innerHTML = "";
+  g.owner_nicknames.forEach(n => {
+    const chip = document.createElement("span");
+    chip.className = "owner-chip";
+    chip.textContent = n;
+    owners.appendChild(chip);
+  });
+  $("detail-acquired").textContent = g.acquired || g.first_seen_at || "未知";
+  $("detail-playtime").textContent = fmtHours(g.playtime_minutes);
+  $("detail-excluded-row").classList.toggle("hidden", g.playable);
+  $("detail-excluded").textContent = g.exclude_reason || "";
+  $("detail-store").onclick = () => window.open(g.store_url, "_blank");
+  $("detail-heihei").onclick = () =>
+    window.open("https://api.xiaoheihe.cn/game/share_game_detail?appid=" + g.appid + "&game_type=pc", "_blank");
+  $("detail-modal-mask").classList.add("open");
+}
+$("detail-modal-mask").addEventListener("click", e => {
+  if (e.target === $("detail-modal-mask")) $("detail-modal-mask").classList.remove("open");
+});
+
+// ---------- Token 弹层 ----------
+
+function openTokenModal() {
+  $("token-modal-mask").classList.add("open");
+  $("token-input").focus();
+}
+$("btn-token").addEventListener("click", openTokenModal);
+$("token-cancel").addEventListener("click", () => $("token-modal-mask").classList.remove("open"));
+$("token-modal-mask").addEventListener("click", e => {
+  if (e.target === $("token-modal-mask")) $("token-modal-mask").classList.remove("open");
+});
+$("token-save").addEventListener("click", async () => {
+  const token = $("token-input").value.trim();
+  if (!token) { toast("请输入 token", true); return; }
+  const btn = $("token-save");
+  btn.disabled = true; btn.textContent = "保存中…";
+  try {
+    const r = await fetch("/api/token", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({token}),
+    });
+    const body = await r.json();
+    if (body.ok) {
+      $("token-modal-mask").classList.remove("open");
+      $("token-input").value = "";
+      toast("抓取成功，共 " + body.data.count + " 个游戏");
+      await loadLibrary();
+    } else {
+      toast(body.error?.message || "保存失败", true);
+    }
+  } catch (e) {
+    toast("请求失败", true);
+  } finally {
+    btn.disabled = false; btn.textContent = "保存并抓取";
+  }
+});
+
+// ---------- 刷新 ----------
+
+$("btn-refresh").addEventListener("click", async () => {
+  const btn = $("btn-refresh");
+  btn.disabled = true; btn.textContent = "抓取中…";
+  try {
+    const r = await fetch("/api/refresh", {method: "POST"});
+    const body = await r.json();
+    if (body.ok) {
+      toast("抓取成功，共 " + body.data.count + " 个游戏");
+      await loadLibrary();
+    } else {
+      toast(body.error?.message || "抓取失败", true);
+      await loadLibrary();
+    }
+  } catch (e) {
+    toast("请求失败", true);
+  } finally {
+    btn.disabled = false; btn.textContent = "⟳ 刷新数据";
+  }
+});
+
+// ---------- 启动 ----------
+
+loadLibrary();
+</script>
+</body>
+</html>
