@@ -1,6 +1,11 @@
 # ===== 私密信息，绝不能提交 =====
 # config.json 含本地 token + members 映射
 config.json
+# local_config.json 为本机自动化设置；steam_profile/ 为独立 Steam 登录状态
+local_config.json
+steam_profile/
+token.txt
+token.txt.tmp
 .env
 .env.*
 *.token

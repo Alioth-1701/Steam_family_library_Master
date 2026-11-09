@@ -1,0 +1,276 @@
+{
+  "updated_at": "2026-11-09T12:12:45+00:00",
+  "count": 15,
+  "library_total_count": 18,
+  "unshareable_total_count": 7,
+  "games": [
+    {
+      "appid": 1086940,
+      "name": "Baldur's Gate 3",
+      "owners": ["家人A", "家人B"],
+      "copy_count": 2,
+      "acquired": "2026-11-05",
+      "playtime_minutes": 1250,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-05",
+      "is_new": true
+    },
+    {
+      "appid": 1091500,
+      "name": "Cyberpunk 2077",
+      "owners": ["家人B"],
+      "copy_count": 1,
+      "acquired": "2026-11-02",
+      "playtime_minutes": 720,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-02",
+      "is_new": true
+    },
+    {
+      "appid": 99999999,
+      "name": "图片失败示例游戏",
+      "owners": ["测试成员"],
+      "copy_count": 1,
+      "acquired": "2026-11-06",
+      "playtime_minutes": 0,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-06",
+      "is_new": true
+    },
+    {
+      "appid": 1145350,
+      "name": "Hades",
+      "owners": ["家人C"],
+      "copy_count": 1,
+      "acquired": "",
+      "playtime_minutes": 0,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-04",
+      "is_new": true
+    },
+    {
+      "appid": 413150,
+      "name": "Stardew Valley",
+      "owners": ["家人B"],
+      "copy_count": 1,
+      "acquired": "2026-10-20",
+      "playtime_minutes": 0,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-10-20",
+      "is_new": true
+    },
+    {
+      "appid": 588650,
+      "name": "Dead Cells",
+      "owners": ["家人C"],
+      "copy_count": 1,
+      "acquired": "2026-10-15",
+      "playtime_minutes": 240,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-10-15",
+      "is_new": true
+    },
+    {
+      "appid": 814380,
+      "name": "Sekiro: Shadows Die Twice",
+      "owners": ["家人B"],
+      "copy_count": 1,
+      "acquired": "2026-10-30",
+      "playtime_minutes": 0,
+      "playable": false,
+      "exclude_reason": "excluded by owner",
+      "first_seen_at": "2026-10-30",
+      "is_new": true
+    },
+    {
+      "appid": 1426210,
+      "name": "It Takes Two",
+      "owners": ["家人A", "家人B"],
+      "copy_count": 2,
+      "acquired": "2021-03-26",
+      "playtime_minutes": 380,
+      "playable": false,
+      "exclude_reason": "region or DRM restricted",
+      "first_seen_at": "2026-11-05",
+      "is_new": false
+    },
+    {
+      "appid": 1245620,
+      "name": "ELDEN RING",
+      "owners": ["家人A"],
+      "copy_count": 1,
+      "acquired": "2022-02-25",
+      "playtime_minutes": 4530,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-05",
+      "is_new": false
+    },
+    {
+      "appid": 105600,
+      "name": "Terraria",
+      "owners": ["家人A", "家人C"],
+      "copy_count": 2,
+      "acquired": "2011-05-16",
+      "playtime_minutes": 18000,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-05",
+      "is_new": false
+    },
+    {
+      "appid": 367520,
+      "name": "Hollow Knight",
+      "owners": ["家人A"],
+      "copy_count": 1,
+      "acquired": "",
+      "playtime_minutes": 930,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2025-05-10",
+      "is_new": false
+    },
+    {
+      "appid": 1868140,
+      "name": "DAVE THE DIVER",
+      "owners": ["家人A"],
+      "copy_count": 1,
+      "acquired": "2026-09-01",
+      "playtime_minutes": 1350,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-09-01",
+      "is_new": false
+    },
+    {
+      "appid": 620,
+      "name": "Portal 2",
+      "owners": ["家人C"],
+      "copy_count": 1,
+      "acquired": "2011-04-19",
+      "playtime_minutes": 540,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-05",
+      "is_new": false
+    },
+    {
+      "appid": 242820,
+      "name": "140",
+      "owners": ["家人A"],
+      "copy_count": 3,
+      "acquired": "2021-06-04",
+      "playtime_minutes": 0,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-05",
+      "is_new": false
+    },
+    {
+      "appid": 646570,
+      "name": "Slay the Spire",
+      "copy_count": 0,
+      "playtime_minutes": 0,
+      "playable": true,
+      "exclude_reason": "",
+      "first_seen_at": "2026-11-05",
+      "is_new": false
+    }
+  ],
+  "member_unshared": [
+    {
+      "member": "我自己",
+      "updated_at": "2026-11-09T12:12:45+00:00",
+      "games": [
+        {
+          "appid": 1426210,
+          "name": "It Takes Two",
+          "owners": ["家人A", "家人B"],
+          "copy_count": 2,
+          "acquired": "2021-03-26",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 555003,
+          "name": "主账号专属不可共享",
+          "owners": ["家人B"],
+          "copy_count": 1,
+          "acquired": "",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        }
+      ]
+    },
+    {
+      "member": "家人A",
+      "updated_at": "2026-11-09T12:12:45+00:00",
+      "games": [
+        {
+          "appid": 814380,
+          "name": "Sekiro: Shadows Die Twice",
+          "owners": ["家人B"],
+          "copy_count": 1,
+          "acquired": "2026-10-30",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1426210,
+          "name": "It Takes Two",
+          "owners": ["家人A", "家人B"],
+          "copy_count": 2,
+          "acquired": "2021-03-26",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 555001,
+          "name": "家人A专属不可共享",
+          "owners": ["家人C"],
+          "copy_count": 1,
+          "acquired": "",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        }
+      ]
+    },
+    {
+      "member": "家人B",
+      "updated_at": "2026-11-09T00:12:45+00:00",
+      "games": [
+        {
+          "appid": 1091500,
+          "name": "Cyberpunk 2077",
+          "owners": ["家人B"],
+          "copy_count": 1,
+          "acquired": "2026-11-02",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 555002,
+          "name": "家人B专属不可共享",
+          "owners": ["家人A"],
+          "copy_count": 1,
+          "acquired": "",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "not eligible for sharing"
+        }
+      ]
+    }
+  ]
+}

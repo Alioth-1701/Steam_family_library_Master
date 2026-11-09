@@ -338,6 +338,7 @@ def load_library():
     finally:
         conn.close()
 
+    account_steamid = str(meta.get("steamid", ""))
     games = []
     for r in rows:
         owners = json.loads(r["owner_steamids"] or "[]")
@@ -354,9 +355,8 @@ def load_library():
             "appid": r["appid"],
             "name": r["name"],
             "source": r["source"],
-            "owned_by_me": str(meta.get("steamid", "")) in owners,
-            "owner_steamids": owners,
-            "owner_nicknames": [nicknames.get(o, o) for o in owners],
+            "owned_by_me": account_steamid in owners,
+            "owner_nicknames": [nicknames.get(o, f"成员 {o[-4:]}") for o in owners],
             "playable": bool(r["playable"]),
             "exclude_reason": r["exclude_reason"],
             "playtime_minutes": r["playtime_minutes"],
@@ -379,11 +379,9 @@ def load_library():
     return {
         "meta": {
             "fetched_at": meta.get("fetched_at", ""),
-            "steamid": meta.get("steamid", ""),
-            "family_groupid": meta.get("family_groupid", ""),
             "family_name": meta.get("family_name", ""),
-            "members": [str(m) for m in members],
-            "members_unmapped": [str(m) for m in unmapped],
+            # 本地 API 也不返回完整 SteamID / 家庭组 ID；未映射成员只显示后 4 位。
+            "members_unmapped": [f"成员 {str(m)[-4:]}" for m in unmapped],
             "token_status": state["token_status"],
             "token_exp": state.get("token_exp"),
             "last_error": state.get("last_error"),

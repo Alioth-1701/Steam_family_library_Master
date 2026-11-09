@@ -1,87 +1,192 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Steam 家庭游戏库</title>
-<style>
-  :root {
-    --bg: #12151c; --bg-card: #1c2230; --text: #e4e8f0;
-    --text-dim: #8b93a5; --accent: #66c0f4; --danger: #f47c66; --new-badge: #e8b33d;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text);
-    font-family: "Segoe UI", "Microsoft YaHei", sans-serif; min-height: 100vh; }
-  .wrap { max-width: 1600px; margin: 0 auto; padding: 20px 24px; }
-  h1 { font-size: 20px; margin-bottom: 4px; }
-  .updated { color: var(--text-dim); font-size: 12px; margin-bottom: 18px; }
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 22px; }
-  .stat { background: var(--bg-card); border-radius: 10px; padding: 14px 18px; }
-  .stat .num { font-size: 26px; font-weight: 700; }
-  .stat .label { color: var(--text-dim); font-size: 12px; margin-top: 3px; }
-  .stat.new .num { color: var(--new-badge); }
-  .stat.blocked .num { color: var(--danger); }
-  .empty { text-align: center; color: var(--text-dim); margin-top: 80px; line-height: 2; }
-  .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-  .game { position: relative; border-radius: 8px; overflow: hidden; aspect-ratio: 2/3;
-    background: var(--bg-card); }
-  .game img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .game.off { filter: grayscale(.9); opacity: .45; }
-  .badge { position: absolute; top: 6px; left: 6px; background: var(--new-badge);
-    color: #1a1405; font-size: 10px; font-weight: 800; padding: 2px 6px; border-radius: 3px; }
-</style>
+  <!--
+    本地预览：在 site/ 目录运行 python -m http.server 8000
+    真实数据：http://localhost:8000/
+    模拟数据：http://localhost:8000/?mock=1
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <title>Steam 家庭游戏库</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
-<div class="wrap">
-  <h1>🎮 Steam 家庭游戏库</h1>
-  <div class="updated" id="updated">加载中…</div>
-  <div class="stats" id="stats" style="display:none">
-    <div class="stat"><div class="num" id="s-total">0</div><div class="label">游戏总数</div></div>
-    <div class="stat new"><div class="num" id="s-new">0</div><div class="label">新入库（最近 30 天）</div></div>
-    <div class="stat blocked"><div class="num" id="s-blocked">0</div><div class="label">不可共享</div></div>
-  </div>
-  <div class="grid" id="grid"></div>
-  <div class="empty hidden" id="empty"></div>
-</div>
-<script>
-"use strict";
-const $ = id => document.getElementById(id);
+  <div class="page-shell">
+    <header class="page-header">
+      <div class="header-main">
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">S</span>
+          <div>
+            <h1>Steam 家庭游戏库</h1>
+            <p id="updated-at" class="updated-at">正在读取数据…</p>
+          </div>
+        </div>
+        <button id="member-panel-button" class="member-panel-button" type="button" aria-haspopup="dialog">
+          <span aria-hidden="true">◧</span>
+          成员不可共享
+          <strong id="member-panel-badge">0</strong>
+        </button>
+      </div>
+      <div class="stats" aria-label="游戏库统计">
+        <div class="stat-card">
+          <strong id="total-count">—</strong>
+          <span>游戏总数</span>
+          <em id="main-count-note">主库 — 款</em>
+        </div>
+        <div class="stat-card stat-new">
+          <strong id="new-count">—</strong>
+          <span>30 天新入库</span>
+        </div>
+        <div class="stat-card stat-unplayable">
+          <strong id="unplayable-count">—</strong>
+          <span>成员不可共享记录</span>
+        </div>
+      </div>
+    </header>
 
-fetch("data/public_library.json").then(r => {
-  if (!r.ok) throw new Error("数据尚未生成");
-  return r.json();
-}).then(d => {
-  $("updated").textContent = "数据更新于 " + (d.updated_at || "").replace("T", " ").slice(0, 19) + " UTC";
-  $("stats").style.display = "";
-  $("s-total").textContent = d.count;
-  $("s-new").textContent = d.games.filter(g => g.is_new).length;
-  $("s-blocked").textContent = d.games.filter(g => !g.playable).length;
-  const grid = $("grid");
-  d.games.forEach(g => {
-    const div = document.createElement("div");
-    div.className = "game" + (g.playable ? "" : " off");
-    if (!g.playable && g.exclude_reason) div.title = g.exclude_reason + "（" + (g.owners.join("、") || "未知") + "）";
-    else div.title = g.name + " — " + (g.owners.join("、") || "未知");
-    const img = document.createElement("img");
-    img.loading = "lazy";
-    img.alt = g.name;
-    img.src = "https://cdn.cloudflare.steamstatic.com/steam/apps/" + g.appid + "/library_600x900_2x.jpg";
-    img.addEventListener("error", function onErr() {
-      if (!img.dataset.fallback) { img.dataset.fallback = "1";
-        img.src = "https://cdn.cloudflare.steamstatic.com/steam/apps/" + g.appid + "/header.jpg"; }
-      else { img.remove(); div.textContent = g.name;
-        div.style.cssText += "display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:12px;padding:8px;text-align:center;"; }
-    });
-    div.appendChild(img);
-    if (g.is_new) { const b = document.createElement("div"); b.className = "badge"; b.textContent = "NEW"; div.appendChild(b); }
-    grid.appendChild(div);
-  });
-}).catch(e => {
-  $("updated").textContent = "";
-  const empty = $("empty");
-  empty.classList.remove("hidden");
-  empty.innerHTML = "暂无公开数据。<br>等待 GitHub Actions 首次成功更新后自动出现。";
-});
-</script>
+    <div id="stale-alert" class="stale-alert" role="status" hidden></div>
+    <div id="load-error" class="load-error" role="alert" hidden></div>
+
+    <section class="new-section" aria-labelledby="new-section-title">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">DISCOVER</p>
+          <h2 id="new-section-title">新入库</h2>
+        </div>
+        <div class="section-actions">
+          <span id="new-section-count" class="section-count"></span>
+          <button id="toggle-new" class="expand-button" type="button" aria-expanded="false" aria-controls="new-games" hidden>展开全部</button>
+        </div>
+      </div>
+      <div id="new-games" class="games-grid new-games-grid" aria-live="polite"></div>
+      <p id="new-empty" class="inline-empty" hidden>最近 30 天没有新入库游戏。</p>
+    </section>
+
+    <section class="library-section" aria-labelledby="library-title">
+      <div class="section-heading library-heading">
+        <div>
+          <p class="eyebrow">LIBRARY</p>
+          <h2 id="library-title">找一款游戏</h2>
+        </div>
+        <div class="section-actions">
+          <span id="result-count" class="section-count"></span>
+          <button id="toggle-library" class="expand-button" type="button" aria-expanded="false" aria-controls="games" hidden>展开全部</button>
+        </div>
+      </div>
+
+      <div class="toolbar" aria-label="游戏筛选工具">
+        <label class="search-box">
+          <span class="visually-hidden">搜索游戏名称</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
+          <input id="search-input" type="search" placeholder="搜索可共享与不可共享游戏…" autocomplete="off">
+        </label>
+
+        <details id="owner-filter" class="owner-filter">
+          <summary>拥有者 <span id="owner-filter-count"></span></summary>
+          <div class="owner-menu">
+            <div id="owner-options" class="owner-options"></div>
+            <button id="clear-owners" class="text-button" type="button">清空选择</button>
+          </div>
+        </details>
+
+        <label class="switch-control">
+          <input id="playable-only" type="checkbox" checked>
+          <span class="switch" aria-hidden="true"></span>
+          <span>只看可玩</span>
+        </label>
+
+        <label class="switch-control">
+          <input id="new-only" type="checkbox">
+          <span class="switch" aria-hidden="true"></span>
+          <span>只看新入库</span>
+        </label>
+
+        <label class="select-control">
+          <span class="visually-hidden">排序方式</span>
+          <select id="sort-select">
+            <option value="recent">最近入库</option>
+            <option value="name">名称</option>
+            <option value="playtime">我的游玩时长</option>
+          </select>
+        </label>
+
+        <div class="view-switch" role="group" aria-label="展示方式">
+          <button type="button" data-view="grid" class="active" aria-pressed="true" title="海报视图">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/></svg>
+            <span class="visually-hidden">海报视图</span>
+          </button>
+          <button type="button" data-view="list" aria-pressed="false" title="列表视图">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            <span class="visually-hidden">列表视图</span>
+          </button>
+        </div>
+
+        <button id="random-button" class="random-button" type="button">
+          <span aria-hidden="true">⚄</span> 今晚玩什么
+        </button>
+      </div>
+
+      <div id="loading" class="loading-state" role="status">正在加载游戏库…</div>
+      <div id="games" class="games-grid"></div>
+      <div id="empty-results" class="empty-results" hidden>
+        <strong>没有找到符合条件的游戏</strong>
+        <p>试试清空搜索、减少拥有者筛选，或关闭“只看可玩”。</p>
+        <button id="reset-filters" class="secondary-button" type="button">重置筛选</button>
+      </div>
+    </section>
+  </div>
+
+  <div id="member-drawer-backdrop" class="drawer-backdrop" hidden>
+    <aside id="member-drawer" class="member-drawer" role="dialog" aria-modal="true" aria-labelledby="member-drawer-title" hidden>
+      <header class="drawer-header">
+        <div>
+          <p class="eyebrow">MEMBERS</p>
+          <h2 id="member-drawer-title">成员不可共享</h2>
+        </div>
+        <button id="close-member-drawer" class="drawer-close" type="button" aria-label="关闭成员不可共享面板">×</button>
+      </header>
+      <p id="member-empty" class="drawer-empty" hidden>尚未收集成员不可共享数据</p>
+      <div id="member-groups" class="member-groups"></div>
+    </aside>
+  </div>
+
+  <div id="game-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+    <div class="modal-panel">
+      <button id="close-modal" class="modal-close" type="button" aria-label="关闭详情">×</button>
+      <div id="modal-poster" class="modal-poster"></div>
+      <div class="modal-content">
+        <p class="eyebrow">GAME DETAILS</p>
+        <h2 id="modal-title"></h2>
+        <dl class="game-details">
+          <div><dt>拥有者</dt><dd id="modal-owners"></dd></div>
+          <div><dt>入库日期</dt><dd id="modal-acquired"></dd></div>
+          <div><dt>我的游玩时长</dt><dd id="modal-playtime"></dd></div>
+        </dl>
+        <div id="modal-copy" class="modal-copy"></div>
+        <p id="modal-reason" class="modal-reason" hidden></p>
+        <div class="modal-actions">
+          <a id="store-link" class="primary-button" href="#" target="_blank" rel="noopener noreferrer">Steam 商店</a>
+          <a id="xiaoheihe-link" class="secondary-button" href="#" target="_blank" rel="noopener noreferrer">小黑盒</a>
+        </div>
+        <button id="reroll-button" class="reroll-button" type="button">换一款</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="reason-backdrop" class="reason-backdrop" hidden>
+    <div id="reason-popover" class="reason-popover" role="dialog" aria-modal="false" aria-labelledby="reason-popover-title">
+      <header>
+        <h2 id="reason-popover-title">不可共享原因</h2>
+        <button id="close-reason" type="button" aria-label="关闭解释">×</button>
+      </header>
+      <p id="reason-popover-text"></p>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <noscript>此看板需要启用 JavaScript 才能读取和筛选游戏数据。</noscript>
 </body>
 </html>

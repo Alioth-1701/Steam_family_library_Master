@@ -35,6 +35,7 @@ jobs:
         env:
           STEAM_WEBAPI_TOKEN: ${{ secrets.STEAM_WEBAPI_TOKEN }}
           MEMBERS_JSON: ${{ secrets.MEMBERS_JSON }}
+          FAMILY_TOKENS_JSON: ${{ secrets.FAMILY_TOKENS_JSON }}
         run: python scripts/cloud_update.py
 
       # result 取值：updated / unchanged / skipped / error
