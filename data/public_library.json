@@ -1,5 +1,5 @@
 {
-  "updated_at": "2026-11-09T12:42:47.150405+00:00",
+  "updated_at": "2026-11-09T16:02:36.600644+00:00",
   "count": 744,
   "games": [
     {
@@ -496,7 +496,7 @@
       ],
       "copy_count": 1,
       "acquired": "2021-01-06",
-      "playtime_minutes": 118822,
+      "playtime_minutes": 118941,
       "playable": false,
       "exclude_reason": "region or DRM restricted",
       "first_seen_at": "2026-11-09",
@@ -10681,12 +10681,12 @@
       "is_new": false
     }
   ],
-  "library_total_count": 744,
-  "unshareable_total_count": 71,
+  "library_total_count": 750,
+  "unshareable_total_count": 118,
   "member_unshared": [
     {
       "member": "Alioth",
-      "updated_at": "2026-11-09T12:42:47.141836+00:00",
+      "updated_at": "2026-11-09T16:02:36.567783+00:00",
       "games": [
         {
           "appid": 714010,
@@ -10708,7 +10708,7 @@
           ],
           "copy_count": 1,
           "acquired": "2021-01-06",
-          "playtime_minutes": 118822,
+          "playtime_minutes": 118941,
           "playable": false,
           "exclude_reason": "region or DRM restricted"
         },
@@ -11542,6 +11542,592 @@
           "copy_count": 1,
           "acquired": "2023-11-19",
           "playtime_minutes": 1005,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        }
+      ]
+    },
+    {
+      "member": "Holly",
+      "updated_at": "2026-11-09T16:02:37.164661+00:00",
+      "games": [
+        {
+          "appid": 1172470,
+          "name": "Apex Legends",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2022-05-15",
+          "playtime_minutes": 159325,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 911400,
+          "name": "Assassin's Creed III Remastered",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-05-29",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 812140,
+          "name": "Assassin's Creed Odyssey",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-05-29",
+          "playtime_minutes": 3912,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1238840,
+          "name": "Battlefield™ 1",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-04-22",
+          "playtime_minutes": 469,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1517290,
+          "name": "Battlefield™ 2042",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2023-10-24",
+          "playtime_minutes": 3260,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 730,
+          "name": "Counter-Strike 2",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2023-10-24",
+          "playtime_minutes": 3372,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1422450,
+          "name": "Deadlock",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2024-09-17",
+          "playtime_minutes": 84,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 570,
+          "name": "Dota 2",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2018-02-02",
+          "playtime_minutes": 5836,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1097150,
+          "name": "Fall Guys",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2020-08-09",
+          "playtime_minutes": 4416,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1568590,
+          "name": "Goose Goose Duck",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2022-11-15",
+          "playtime_minutes": 1875,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 3240220,
+          "name": "Grand Theft Auto V Enhanced",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2018-05-10",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 271590,
+          "name": "Grand Theft Auto V Legacy",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2018-05-10",
+          "playtime_minutes": 7276,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1426210,
+          "name": "It Takes Two",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-12-24",
+          "playtime_minutes": 2569,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 319630,
+          "name": "Life is Strange™",
+          "owners": [
+            "Alioth",
+            "mocloli",
+            "抹茶慕斯"
+          ],
+          "copy_count": 3,
+          "acquired": "2024-02-14",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 2767030,
+          "name": "Marvel Rivals",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2024-12-07",
+          "playtime_minutes": 3444,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 2362420,
+          "name": "Mass Effect 2 (2010) Edition",
+          "owners": [
+            "Alioth"
+          ],
+          "copy_count": 1,
+          "acquired": "2017-06-24",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1222680,
+          "name": "Need for Speed™ Heat ",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2022-09-29",
+          "playtime_minutes": 222,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 2357570,
+          "name": "Overwatch®",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2024-11-14",
+          "playtime_minutes": 7,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 813000,
+          "name": "PUBG: Experimental Server",
+          "owners": [
+            "Holly",
+            "hqYang",
+            "Alioth",
+            "抹茶慕斯"
+          ],
+          "copy_count": 4,
+          "acquired": "2021-04-28",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1174180,
+          "name": "Red Dead Redemption 2",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-11-25",
+          "playtime_minutes": 6985,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 480,
+          "name": "Spacewar",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2018-02-02",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 440,
+          "name": "Team Fortress 2",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2018-02-02",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1237970,
+          "name": "Titanfall® 2",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2023-09-08",
+          "playtime_minutes": 1490,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 359550,
+          "name": "Tom Clancy's Rainbow Six Siege",
+          "owners": [
+            "Alioth"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-03-18",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 552990,
+          "name": "World of Warships",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2022-09-24",
+          "playtime_minutes": 1097,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 2121360,
+          "name": "东北之夏",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2024-11-01",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1329410,
+          "name": "雀魂麻将(MahjongSoul)",
+          "owners": [
+            "Holly"
+          ],
+          "copy_count": 1,
+          "acquired": "2022-05-11",
+          "playtime_minutes": 772,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        }
+      ]
+    },
+    {
+      "member": "mocloli",
+      "updated_at": "2026-11-09T16:02:37.440972+00:00",
+      "games": [
+        {
+          "appid": 714010,
+          "name": "Aimlabs",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2022-06-20",
+          "playtime_minutes": 34,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1172470,
+          "name": "Apex Legends",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2020-11-07",
+          "playtime_minutes": 117039,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1238810,
+          "name": "Battlefield™ V",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-08-28",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 550650,
+          "name": "Black Squad",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2018-11-12",
+          "playtime_minutes": 1146,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 730,
+          "name": "Counter-Strike 2",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2019-08-11",
+          "playtime_minutes": 149,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 570,
+          "name": "Dota 2",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2017-10-11",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1426210,
+          "name": "It Takes Two",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2022-01-09",
+          "playtime_minutes": 2094,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 319630,
+          "name": "Life is Strange™",
+          "owners": [
+            "mocloli",
+            "Alioth",
+            "抹茶慕斯"
+          ],
+          "copy_count": 3,
+          "acquired": "2024-02-14",
+          "playtime_minutes": 55,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 2767030,
+          "name": "Marvel Rivals",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2024-12-17",
+          "playtime_minutes": 1778,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 2362420,
+          "name": "Mass Effect 2 (2010) Edition",
+          "owners": [
+            "Alioth"
+          ],
+          "copy_count": 1,
+          "acquired": "2017-06-24",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 2357570,
+          "name": "Overwatch®",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2024-11-14",
+          "playtime_minutes": 45,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 813000,
+          "name": "PUBG: Experimental Server",
+          "owners": [
+            "hqYang",
+            "Alioth",
+            "Holly",
+            "抹茶慕斯"
+          ],
+          "copy_count": 4,
+          "acquired": "2021-04-28",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 480,
+          "name": "Spacewar",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2017-10-11",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 1172380,
+          "name": "STAR WARS Jedi: Fallen Order™ ",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2020-01-25",
+          "playtime_minutes": 1746,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1774580,
+          "name": "STAR WARS Jedi: Survivor™",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2025-01-28",
+          "playtime_minutes": 1455,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 440,
+          "name": "Team Fortress 2",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2017-10-11",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 359550,
+          "name": "Tom Clancy's Rainbow Six Siege",
+          "owners": [
+            "Alioth"
+          ],
+          "copy_count": 1,
+          "acquired": "2021-03-18",
+          "playtime_minutes": 0,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 230410,
+          "name": "Warframe",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2019-07-22",
+          "playtime_minutes": 466,
+          "playable": false,
+          "exclude_reason": "region or DRM restricted"
+        },
+        {
+          "appid": 447040,
+          "name": "Watch_Dogs 2",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2019-03-24",
+          "playtime_minutes": 41,
+          "playable": false,
+          "exclude_reason": "excluded by owner"
+        },
+        {
+          "appid": 1329410,
+          "name": "雀魂麻将(MahjongSoul)",
+          "owners": [
+            "mocloli"
+          ],
+          "copy_count": 1,
+          "acquired": "2026-02-23",
+          "playtime_minutes": 50,
           "playable": false,
           "exclude_reason": "region or DRM restricted"
         }
